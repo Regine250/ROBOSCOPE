@@ -1,0 +1,40 @@
+version: '3.8'
+
+services:
+  backend:
+    build:
+      context: .
+      dockerfile: Dockerfile.backend
+    container_name: roboscope-backend
+    restart: unless-stopped
+    ports:
+      - "8000:8000"
+    environment:
+      - CORS_ORIGINS=*
+      - INGESTION_INTERVAL_HOURS=6
+      - JWT_SECRET_KEY=${JWT_SECRET_KEY:-roboscope-super-secret-jwt-key-2026-xyz-embodied-ai}
+      - JWT_EXPIRY_HOURS=${JWT_EXPIRY_HOURS:-168}
+    volumes:
+      - roboscope_data:/app/data
+    healthcheck:
+      test: ["CMD", "curl", "-f", "http://localhost:8000/api/health"]
+      interval: 30s
+      timeout: 10s
+      retries: 3
+      start_period: 10s
+
+  frontend:
+    build:
+      context: .
+      dockerfile: Dockerfile.frontend
+    container_name: roboscope-frontend
+    restart: unless-stopped
+    ports:
+      - "3000:80"
+    depends_on:
+      backend:
+        condition: service_healthy
+
+volumes:
+  roboscope_data:
+    driver: local

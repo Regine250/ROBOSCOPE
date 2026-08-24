@@ -1,0 +1,24 @@
+# Git & IDE
+.git
+.gitignore
+.cursor
+.gemini
+.vscode
+.idea
+
+# Node & Python caches
+node_modules
+__pycache__
+*.pyc
+*.pyo
+*.pyd
+.Python
+env/
+venv/
+.venv/
+dist/
+build/
+*.egg-info
+
+# Local data (persisted via Docker volumes)
+data/

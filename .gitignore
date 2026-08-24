@@ -1,0 +1,31 @@
+# Dependencies
+node_modules/
+.venv/
+venv/
+env/
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Local Database & Cache
+data/*.db
+data/*.db-wal
+data/*.db-shm
+data/datasets/
+
+# Build artifacts
+dist/
+build/
+.cache/
+
+# IDE & Editor files
+.cursor/
+.gemini/
+.vscode/
+.idea/
+*.log
+
+# Environment variables
+.env
+.env.local

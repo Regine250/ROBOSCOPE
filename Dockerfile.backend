@@ -1,0 +1,29 @@
+# Dockerfile.backend for RoboScope FastAPI Service
+FROM python:3.11-slim
+
+WORKDIR /app
+
+# Install system utilities & build tools
+RUN apt-get update && apt-get install -y --no-install-recommends \
+    curl \
+    git \
+    build-essential \
+    ffmpeg \
+    && rm -rf /var/lib/apt/lists/*
+
+# Copy and install python dependencies
+COPY backend/requirements.txt /app/requirements.txt
+RUN pip install --no-cache-dir -r /app/requirements.txt
+
+# Copy backend codebase
+COPY backend/ /app/backend/
+
+# Create data directory structure for SQLite and HuggingFace cache
+RUN mkdir -p /app/data/datasets
+
+ENV PYTHONUNBUFFERED=1
+ENV PYTHONPATH=/app/backend
+
+EXPOSE 8000
+
+CMD ["uvicorn", "main:app", "--host", "0.0.0.0", "--port", "8000", "--app-dir", "/app/backend"]
