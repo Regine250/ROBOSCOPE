@@ -1,0 +1,608 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>AUCA Student Attachment Logbook - RoboScope Project</title>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Times+New+Roman:wght@400;700&family=Arial:wght@400;600;700&display=swap');
+
+  body {
+    font-family: 'Times New Roman', Times, serif;
+    color: #111;
+    background: #f4f6f8;
+    margin: 0;
+    padding: 20px;
+    line-height: 1.5;
+  }
+
+  .no-print-bar {
+    max-width: 900px;
+    margin: 0 auto 20px auto;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    background: #0f172a;
+    color: #fff;
+    padding: 14px 24px;
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    font-family: 'Arial', sans-serif;
+    gap: 15px;
+    flex-wrap: wrap;
+  }
+
+  .export-btns {
+    display: flex;
+    gap: 10px;
+  }
+
+  .export-btn {
+    color: #fff;
+    border: none;
+    padding: 8px 16px;
+    border-radius: 6px;
+    font-size: 13px;
+    font-weight: bold;
+    cursor: pointer;
+    text-decoration: none;
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    transition: opacity 0.2s;
+  }
+
+  .btn-pdf { background: #0284c7; }
+  .btn-word { background: #2563eb; }
+  .btn-md { background: #475569; }
+  .export-btn:hover { opacity: 0.9; }
+
+  .page {
+    max-width: 850px;
+    margin: 0 auto 30px auto;
+    background: #fff;
+    padding: 50px 60px;
+    box-shadow: 0 0 10px rgba(0,0,0,0.08);
+    border-radius: 4px;
+    box-sizing: border-box;
+  }
+
+  .header-logo {
+    text-align: center;
+    border-bottom: 2px solid #1e3a8a;
+    padding-bottom: 15px;
+    margin-bottom: 25px;
+  }
+
+  .uni-title {
+    font-size: 22px;
+    font-weight: bold;
+    color: #1e3a8a;
+    margin: 0;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+  }
+
+  .uni-sub {
+    font-size: 13px;
+    color: #555;
+    margin: 4px 0 0 0;
+    font-family: 'Arial', sans-serif;
+  }
+
+  .faculty-title {
+    font-size: 17px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 10px;
+    text-transform: uppercase;
+  }
+
+  .doc-title {
+    text-align: center;
+    font-size: 19px;
+    font-weight: bold;
+    color: #000;
+    margin: 20px 0;
+    text-decoration: underline;
+    text-transform: uppercase;
+  }
+
+  h2 {
+    font-size: 15px;
+    color: #1e3a8a;
+    border-bottom: 1.5px solid #1e3a8a;
+    padding-bottom: 4px;
+    margin-top: 25px;
+    margin-bottom: 12px;
+    text-transform: uppercase;
+  }
+
+  h3 {
+    font-size: 14px;
+    color: #000;
+    margin-top: 16px;
+    margin-bottom: 8px;
+  }
+
+  p, li {
+    font-size: 13.5px;
+    text-align: justify;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+    margin: 15px 0;
+    font-size: 12.5px;
+  }
+
+  table, th, td {
+    border: 1px solid #333;
+  }
+
+  th {
+    background-color: #f1f5f9;
+    color: #0f172a;
+    font-weight: bold;
+    text-align: center;
+    padding: 7px 6px;
+  }
+
+  td {
+    padding: 6px 8px;
+    vertical-align: top;
+  }
+
+  .info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 10px 20px;
+    margin-bottom: 15px;
+    font-size: 13.5px;
+  }
+
+  .info-item {
+    border-bottom: 1px dotted #888;
+    padding-bottom: 3px;
+  }
+
+  .info-item strong {
+    color: #1e3a8a;
+  }
+
+  .sign-section {
+    margin-top: 30px;
+    display: flex;
+    justify-content: space-between;
+    font-size: 13px;
+  }
+
+  .sign-box {
+    width: 45%;
+    border-top: 1px solid #333;
+    padding-top: 5px;
+    text-align: center;
+  }
+
+  .badge-swot {
+    display: inline-block;
+    padding: 2px 6px;
+    border-radius: 4px;
+    font-weight: bold;
+    font-size: 11px;
+    font-family: 'Arial', sans-serif;
+  }
+  .swot-s { background: #dcfce7; color: #166534; }
+  .swot-w { background: #fee2e2; color: #991b1b; }
+  .swot-o { background: #e0f2fe; color: #075985; }
+  .swot-t { background: #fef3c7; color: #92400e; }
+
+  @media print {
+    body {
+      background: #fff;
+      padding: 0;
+    }
+    .no-print-bar {
+      display: none;
+    }
+    .page {
+      box-shadow: none;
+      padding: 30px 40px;
+      margin: 0;
+      page-break-after: always;
+    }
+  }
+</style>
+</head>
+<body>
+
+<div class="no-print-bar">
+  <div>
+    <strong>AUCA Faculty of Information Technology — Attachment Logbook</strong><br>
+    <small>Export to Word (.docx / .doc), PDF, or Markdown</small>
+  </div>
+  <div class="export-btns">
+    <button class="export-btn btn-pdf" onclick="window.print()">🖨️ Save as PDF</button>
+    <button class="export-btn btn-word" onclick="exportToWord()">📄 Export to Word (.doc)</button>
+    <button class="export-btn btn-md" onclick="downloadMarkdown()">💾 Download .md</button>
+  </div>
+</div>
+
+<!-- PAGE 1: COVER & FORM I -->
+<div class="page">
+  <div class="header-logo">
+    <h1 class="uni-title">Adventist University of Central Africa</h1>
+    <p class="uni-sub">P.O. Box 2461 Kigali, Rwanda | www.auca.ac.rw | info@auca.ac.rw</p>
+    <div class="faculty-title">Faculty of Information Technology</div>
+  </div>
+
+  <div class="doc-title">STUDENTS' ATTACHMENT LOGBOOK & REPORT</div>
+
+  <h2>FORM I: ATTACHMENT PLACEMENT & PERSONAL DETAILS</h2>
+  
+  <div class="info-grid">
+    <div class="info-item"><strong>Student Name:</strong> Regine PACIS</div>
+    <div class="info-item"><strong>Student ID:</strong> ______________________</div>
+    <div class="info-item"><strong>Faculty:</strong> Information Technology</div>
+    <div class="info-item"><strong>Department:</strong> Software Engineering / IT</div>
+    <div class="info-item"><strong>Academic Year:</strong> 2025 / 2026</div>
+    <div class="info-item"><strong>Course Code:</strong> INAT 353 Industrial Attachment</div>
+  </div>
+
+  <h3>HOST ORGANIZATION / PROJECT DETAILS</h3>
+  <div class="info-grid">
+    <div class="info-item"><strong>Host Organization / Project:</strong> RoboScope Engineering Team</div>
+    <div class="info-item"><strong>Project Title:</strong> RoboScope Robotics & Embodied AI Platform</div>
+    <div class="info-item"><strong>Department / Unit:</strong> Full-Stack & Cloud Systems Engineering</div>
+    <div class="info-item"><strong>Location / Address:</strong> Kigali, Rwanda</div>
+    <div class="info-item"><strong>Industry Supervisor:</strong> Lead Software Engineer</div>
+    <div class="info-item"><strong>Supervisor Contact / Title:</strong> Senior Systems Architect</div>
+  </div>
+
+  <h2>EXECUTIVE SUMMARY</h2>
+  <p>
+    During the industrial attachment period, the student functioned as a <strong>Full-Stack Software and DevOps Engineer</strong> on the <strong>RoboScope</strong> platform—a specialized robotics research portal and embodied AI trajectory analysis system. Key contributions spanned backend microservice engineering in Python (FastAPI, SQLite3, PyArrow), interactive frontend application development in React 18 (Vite, uPlot), cryptographic user authentication (PBKDF2-HMAC-SHA256, JWT), responsive user dashboard engineering, and automated 100% free cloud deployment on Render.
+  </p>
+
+  <div class="sign-section">
+    <div class="sign-box">
+      Student Signature: _______________________<br>
+      Date: _______________________
+    </div>
+    <div class="sign-box">
+      Industry Supervisor Signature & Stamp: _______________________<br>
+      Date: _______________________
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 2: LOG FORM III (WEEK 1 SUMMARY) -->
+<div class="page">
+  <div class="header-logo">
+    <h1 class="uni-title">Adventist University of Central Africa</h1>
+    <div class="faculty-title">LOG FORM III: DAILY SUMMARY REPORT (WEEK 1)</div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-item"><strong>Week No:</strong> Week 1</div>
+    <div class="info-item"><strong>Focus Area:</strong> Diagnostics, Ingestion Pipelines & Video Sync</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%;">Day</th>
+        <th style="width: 38%;">Brief Description of Work / Activity Performed</th>
+        <th style="width: 10%;">Time In/Out</th>
+        <th style="width: 8%;">Total Hours</th>
+        <th style="width: 18%;">Lessons Learnt</th>
+        <th style="width: 18%;">Challenges Faced</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Mon</strong></td>
+        <td><strong>Codebase Audit & Package Restructuring:</strong> Diagnosed full-stack codebase; resolved broken Python package initializations (renamed malformed <code>_init_.py</code> to <code>__init__.py</code>); resolved missing runtime dependencies (<code>pandas</code>, <code>pydantic</code>); validated SQLite database schema and FTS5 full-text search triggers.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>PEP-8 package standards and clean namespace isolation in modular FastAPI architectures.</td>
+        <td>Broken module imports preventing startup due to improper init filenames.</td>
+      </tr>
+      <tr>
+        <td><strong>Tue</strong></td>
+        <td><strong>Robotics Dataset Ingestion & Asynchronous I/O:</strong> Refactored Hugging Face LeRobot dataset downloader; resolved shadowed API handler functions in <code>routers/datasets.py</code>; implemented FastAPI <code>BackgroundTasks</code> for non-blocking downloads; engineered dynamic regex episode discovery in <code>trajectory.py</code>.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>Asynchronous background processing prevents HTTP request timeouts during large multi-gigabyte downloads.</td>
+        <td>Varied Parquet episode numbering formats (padded zeros vs simple indices) causing file lookup errors.</td>
+      </tr>
+      <tr>
+        <td><strong>Wed</strong></td>
+        <td><strong>Video Streaming & API Client Consolidation:</strong> Configured multi-camera MP4 streaming endpoints; eliminated duplicate/broken frontend API clients by writing a unified <code>api.js</code>; fixed missing React <code>useState</code> hook in <code>useVideoSync.js</code>.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>Centralized API client design and sub-millisecond video synchronization using <code>requestVideoFrameCallback</code>.</td>
+        <td>Query parameter mismatches (<code>camera</code> vs <code>key</code>) and runtime React hook crashes.</td>
+      </tr>
+      <tr>
+        <td><strong>Thu</strong></td>
+        <td><strong>Canvas Trajectory Visualizer with uPlot:</strong> Developed <code>TrajectoryPlot.jsx</code> utilizing uPlot with <code>ResizeObserver</code>; implemented custom HTML5 Canvas vertical cursor drawing synchronized with real-time video playback and frame stepping (±1 frame).</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>High-performance canvas rendering for multi-channel robotic sensor time-series telemetry.</td>
+        <td>Timeline scrubber drifting and coordinate mapping under dynamic viewport resizing.</td>
+      </tr>
+      <tr>
+        <td><strong>Fri</strong></td>
+        <td><strong>Catalog & Live Feed Integration:</strong> Integrated automated arXiv robotics crawler (cs.RO, cs.LG); built interactive <code>TagPicker.jsx</code> with auto-completion; implemented live download progress polling in <code>DatasetCatalog.jsx</code>.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>Stateful reactive polling patterns for real-time monitoring of asynchronous cloud tasks.</td>
+        <td>State race conditions during concurrent dataset downloads and UI re-renders.</td>
+      </tr>
+      <tr style="background:#f8fafc; font-weight:bold;">
+        <td colspan="3" style="text-align:right;">Total Hours Worked in Week 1:</td>
+        <td>40 hrs</td>
+        <td colspan="2">Week 1 Target Completed Successfully</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="sign-section">
+    <div class="sign-box">
+      Student Signature: _______________________<br>
+      Date: _______________________
+    </div>
+    <div class="sign-box">
+      Field Supervisor Signature: _______________________<br>
+      Date: _______________________
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 3: LOG FORM III (WEEK 2 SUMMARY) -->
+<div class="page">
+  <div class="header-logo">
+    <h1 class="uni-title">Adventist University of Central Africa</h1>
+    <div class="faculty-title">LOG FORM III: DAILY SUMMARY REPORT (WEEK 2)</div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-item"><strong>Week No:</strong> Week 2</div>
+    <div class="info-item"><strong>Focus Area:</strong> Security, Auth UI, Dashboard & Cloud Deployment</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 8%;">Day</th>
+        <th style="width: 38%;">Brief Description of Work / Activity Performed</th>
+        <th style="width: 10%;">Time In/Out</th>
+        <th style="width: 8%;">Total Hours</th>
+        <th style="width: 18%;">Lessons Learnt</th>
+        <th style="width: 18%;">Challenges Faced</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Mon</strong></td>
+        <td><strong>Security Architecture & Cryptographic Engine:</strong> Migrated SQLite database schema to support <code>users</code> and user-linked <code>saved_items</code>; developed <code>backend/auth.py</code> utilizing PBKDF2-HMAC-SHA256 (100,000 rounds) for password hashing and signed HMAC-SHA256 JWT tokens.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>Industry-standard cryptographic hashing and stateless JWT authorization without relying on external native binaries.</td>
+        <td>Ensuring zero-compilation cross-platform portability across Windows, WSL, and Linux servers.</td>
+      </tr>
+      <tr>
+        <td><strong>Tue</strong></td>
+        <td><strong>Auth API & Frontend State Management:</strong> Built <code>routers/auth.py</code> (endpoints: <code>/register</code>, <code>/login</code>, <code>/me</code>); created React <code>AuthContext.jsx</code> for persistent JWT sessions; created glassmorphic <code>AuthPage.jsx</code> with validation and password reveal toggles.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>Token persistence via localStorage, HTTP Authorization header injection, and client-side route guards.</td>
+        <td>Graceful handling of token expiration and session synchronization across page reloads.</td>
+      </tr>
+      <tr>
+        <td><strong>Wed</strong></td>
+        <td><strong>Personalized Research Dashboard Development:</strong> Engineered <code>GET /api/dashboard</code> aggregation endpoint; built <code>Dashboard.jsx</code> with live KPI cards, interactive bookmark manager, dataset quick-launcher, and arXiv category distribution meters.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>Architecting analytical dashboard interfaces with high information density and intuitive visual hierarchy.</td>
+        <td>Efficiently computing relational SQLite metric aggregations across multiple tables in a single query.</td>
+      </tr>
+      <tr>
+        <td><strong>Thu</strong></td>
+        <td><strong>Design System Overhaul & Build Verification:</strong> Upgraded <code>App.css</code> to a modern dark cybernetic aesthetic; added user avatar profile badge and dropdown menu; fixed optional Rollup binaries for Windows/WSL; verified production build (<code>npm run build</code> in 3.56s).</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>CSS design tokens, responsive CSS grid layouts, and asset bundle optimization for Single Page Applications.</td>
+        <td>Cross-platform native binary conflicts between Windows host and WSL environment.</td>
+      </tr>
+      <tr>
+        <td><strong>Fri</strong></td>
+        <td><strong>Containerization & Production Cloud Deployment:</strong> Configured static SPA serving in FastAPI; created multi-stage Dockerfile, <code>build.sh</code>, and <code>render.yaml</code> Blueprint; initialized Git, resolved nested submodule conflicts, and deployed live to Render's free tier.</td>
+        <td>08:00<br>17:00</td>
+        <td>8 hrs</td>
+        <td>CI/CD deployment pipelines, SPA client-side routing fallback on Nginx/Uvicorn, and zero-cost cloud PaaS setup.</td>
+        <td>Nested <code>.git</code> repository blocking staging; configuring GitHub Personal Access Token authentication.</td>
+      </tr>
+      <tr style="background:#f8fafc; font-weight:bold;">
+        <td colspan="3" style="text-align:right;">Total Hours Worked in Week 2:</td>
+        <td>40 hrs</td>
+        <td colspan="2">Cumulative Attachment Total: 80 Hours</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="sign-section">
+    <div class="sign-box">
+      Student Signature: _______________________<br>
+      Date: _______________________
+    </div>
+    <div class="sign-box">
+      Field Supervisor Signature: _______________________<br>
+      Date: _______________________
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 4: LOG FORM II SAMPLES -->
+<div class="page">
+  <div class="header-logo">
+    <h1 class="uni-title">Adventist University of Central Africa</h1>
+    <div class="faculty-title">LOG FORM II: DAILY DETAILED DESCRIPTION OF WORK (SAMPLE ENTRY)</div>
+  </div>
+
+  <div class="info-grid">
+    <div class="info-item"><strong>Date:</strong> Week 2, Wednesday</div>
+    <div class="info-item"><strong>Module / Feature:</strong> Personalized User Dashboard & Analytics</div>
+  </div>
+
+  <table>
+    <thead>
+      <tr>
+        <th style="width: 25%;">Section</th>
+        <th style="width: 75%;">Detailed Technical Description</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><strong>Sequence of Operation for Job</strong></td>
+        <td>
+          1. Formulated REST endpoint specifications for user dashboard aggregation in FastAPI.<br>
+          2. Built relational SQL queries in SQLite computing user bookmarked papers, ready datasets, taxonomy tags, and category breakdown.<br>
+          3. Constructed React <code>Dashboard.jsx</code> page with responsive 4-column KPI cards and interactive list views.<br>
+          4. Implemented real-time progress bars visualizing paper distribution across <code>cs.RO</code> (Robotics) and <code>cs.LG</code> (Machine Learning).<br>
+          5. Integrated route protection redirecting unauthenticated visitors to <code>/login</code>.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Tools & Equipment Used</strong></td>
+        <td>Python 3.11, FastAPI, SQLite3, React 18, React Router v7, Visual Studio Code / Antigravity IDE, Git.</td>
+      </tr>
+      <tr>
+        <td><strong>Tasks Completed</strong></td>
+        <td>
+          • Completed <code>backend/routers/dashboard.py</code> with <code>GET /api/dashboard</code>.<br>
+          • Completed <code>frontend/src/pages/Dashboard.jsx</code> with KPI cards and dataset quick-launcher.<br>
+          • Connected optimistic UI bookmark removal and manual arXiv sync trigger.
+        </td>
+      </tr>
+      <tr>
+        <td><strong>Tasks in Progress</strong></td>
+        <td>End-to-end production build testing and cross-platform native binary packaging.</td>
+      </tr>
+      <tr>
+        <td><strong>Next Day's Tasks</strong></td>
+        <td>Overhaul global CSS design system and execute multi-platform build verification.</td>
+      </tr>
+      <tr>
+        <td><strong>Problems / Challenges</strong></td>
+        <td>Structuring responsive CSS Grid layouts that dynamically adapt multi-series progress bars across mobile and high-resolution desktop viewports.</td>
+      </tr>
+      <tr>
+        <td><strong>Student's Recommendations</strong></td>
+        <td>Use dedicated analytics aggregation endpoints rather than multiple round-trip client requests to optimize frontend render latency.</td>
+      </tr>
+    </tbody>
+  </table>
+
+  <div class="sign-section">
+    <div class="sign-box">
+      Student Signature: _______________________<br>
+      Date: _______________________
+    </div>
+    <div class="sign-box">
+      Field Supervisor Signature: _______________________<br>
+      Date: _______________________
+    </div>
+  </div>
+</div>
+
+<!-- PAGE 5: SWOT ANALYSIS & REPORT -->
+<div class="page">
+  <div class="header-logo">
+    <h1 class="uni-title">Adventist University of Central Africa</h1>
+    <div class="faculty-title">SECTION XX: SELF EVALUATION REPORT (SWOT ANALYSIS)</div>
+  </div>
+
+  <h2>1. SELF-EVALUATION & SWOT ANALYSIS</h2>
+
+  <h3>A. Strengths <span class="badge-swot swot-s">Strengths</span></h3>
+  <ul>
+    <li><strong>Full-Stack Integration Competence:</strong> Successfully connected a reactive React 18 frontend with an asynchronous Python FastAPI backend, managing data flow through REST APIs and JWT security.</li>
+    <li><strong>Problem Solving & Debugging:</strong> Rapidly isolated and resolved complex bugs, including shadowed route handlers, Python package misconfigurations, and video-telemetry synchronization drift.</li>
+    <li><strong>Cross-Platform DevOps Knowledge:</strong> Gained hands-on mastery of containerization (Docker, Docker Compose), web servers (Nginx), and automated cloud PaaS deployment (Render).</li>
+  </ul>
+
+  <h3>B. Weaknesses <span class="badge-swot swot-w">Weaknesses</span></h3>
+  <ul>
+    <li><strong>Initial Cross-Platform Tooling Familiarity:</strong> Encountered platform-specific native binary conflicts between Windows and WSL Linux environments during early build attempts.</li>
+  </ul>
+
+  <h3>C. Opportunities <span class="badge-swot swot-o">Opportunities</span></h3>
+  <ul>
+    <li><strong>Embodied AI & Robotics Intelligence:</strong> Hands-on exposure to Hugging Face LeRobot datasets and PyArrow Parquet formats opened avenues for future work in AI data engineering.</li>
+    <li><strong>Cloud Architecture & Microservices:</strong> Practical experience in zero-cost cloud deployments provides high career readiness for software engineering roles.</li>
+  </ul>
+
+  <h3>D. Threats / Challenges Overcome <span class="badge-swot swot-t">Threats & Challenges</span></h3>
+  <ul>
+    <li><strong>Git Submodule & Authentication Roadblocks:</strong> Overcame nested repository blockers and GitHub token authentication requirements to successfully deploy the production codebase.</li>
+  </ul>
+
+  <h2>2. CONCLUSION & LESSONS LEARNT</h2>
+  <p>
+    The industrial attachment provided intensive, real-world full-stack development and DevOps experience. Beyond writing clean code, the exercise reinforced the necessity of structured software architecture, database indexing, user security engineering, and cloud deployment automation. The completed <strong>RoboScope</strong> platform stands as a production-grade, highly responsive system ready for academic and industrial research use.
+  </p>
+
+  <div class="sign-section">
+    <div class="sign-box">
+      Student Signature: _______________________<br>
+      Date: _______________________
+    </div>
+    <div class="sign-box">
+      University Supervisor Signature: _______________________<br>
+      Date: _______________________
+    </div>
+  </div>
+</div>
+
+<script>
+function exportToWord() {
+  const pages = document.querySelectorAll('.page');
+  let fullHtml = '<html xmlns:o="urn:schemas-microsoft-com:office:office" xmlns:w="urn:schemas-microsoft-com:office:word" xmlns="http://www.w3.org/TR/REC-html40"><head><meta charset="utf-8"><title>AUCA Logbook</title><style>body{font-family:Times New Roman;font-size:11pt;}table{border-collapse:collapse;width:100%;}table,th,td{border:1px solid black;padding:5px;}th{background:#eee;}</style></head><body>';
+  pages.forEach(p => {
+    fullHtml += p.innerHTML + '<br clear=all style="mso-special-character:line-break;page-break-before:always">';
+  });
+  fullHtml += '</body></html>';
+  
+  const blob = new Blob(['\ufeff', fullHtml], { type: 'application/msword' });
+  const url = URL.createObjectURL(blob);
+  const a = document.createElement('a');
+  a.href = url;
+  a.download = 'AUCA_STUDENTS_ATTACHMENT_LOGBOOK.doc';
+  document.body.appendChild(a);
+  a.click();
+  document.body.removeChild(a);
+}
+
+function downloadMarkdown() {
+  fetch('AUCA_STUDENTS_ATTACHMENT_LOGBOOK.md')
+    .then(res => res.text())
+    .then(text => {
+      const blob = new Blob([text], { type: 'text/markdown' });
+      const url = URL.createObjectURL(blob);
+      const a = document.createElement('a');
+      a.href = url;
+      a.download = 'AUCA_STUDENTS_ATTACHMENT_LOGBOOK.md';
+      document.body.appendChild(a);
+      a.click();
+      document.body.removeChild(a);
+    })
+    .catch(() => {
+      window.open('AUCA_STUDENTS_ATTACHMENT_LOGBOOK.md');
+    });
+}
+</script>
+</body>
+</html>

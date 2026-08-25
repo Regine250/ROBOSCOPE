@@ -8,7 +8,7 @@ from contextlib import asynccontextmanager
 
 from db import init_db
 from scheduler import start_scheduler, shutdown_scheduler
-from routers import papers, tags, saved, datasets, ingest, auth, dashboard
+from routers import papers, tags, saved, datasets, ingest, auth, dashboard, chat
 
 @asynccontextmanager
 async def lifespan(app: FastAPI):
@@ -25,8 +25,8 @@ async def lifespan(app: FastAPI):
 
 app = FastAPI(
     title="RoboScope API",
-    description="Robotics research paper feed, user authentication & dataset trajectory explorer backend",
-    version="1.2.0",
+    description="Robotics research paper feed, user authentication, dataset trajectory explorer & AI research chatbot backend",
+    version="1.3.0",
     lifespan=lifespan,
 )
 
@@ -47,6 +47,7 @@ app.add_middleware(
 # Register API Routers
 app.include_router(auth.router)
 app.include_router(dashboard.router)
+app.include_router(chat.router)
 app.include_router(papers.router)
 app.include_router(tags.router)
 app.include_router(saved.router)
@@ -56,7 +57,7 @@ app.include_router(ingest.router)
 @app.get("/api/health")
 @app.get("/health")
 def health_check():
-    return {"status": "ok", "service": "RoboScope API", "version": "1.2.0"}
+    return {"status": "ok", "service": "RoboScope API", "version": "1.3.0"}
 
 # Serve frontend static assets if built (for unified single-container free hosting)
 STATIC_DIR = Path(__file__).resolve().parent.parent / "frontend" / "dist"

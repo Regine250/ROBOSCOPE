@@ -8,6 +8,7 @@ import DatasetCatalog from './pages/datasetCatalog.jsx';
 import EpisodeViewer from './pages/EpisodeViewer.jsx';
 import AuthPage from './pages/AuthPage.jsx';
 import Dashboard from './pages/Dashboard.jsx';
+import ChatbotWidget from './components/ChatbotWidget.jsx';
 
 function NavigationBar() {
   const { user, isAuthenticated, logout } = useAuth();
@@ -142,6 +143,9 @@ function App() {
         <footer className="app-footer">
           <p>RoboScope — Automated arXiv Robotics Feed & Embodied AI Trajectory Explorer</p>
         </footer>
+
+        {/* Global AI Research Assistant Chatbot Widget */}
+        <ChatbotWidget />
       </div>
     </AuthProvider>
   );

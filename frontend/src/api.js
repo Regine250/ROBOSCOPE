@@ -28,6 +28,16 @@ async function handleResponse(response) {
 }
 
 export const api = {
+  // --- AI Research Chatbot ---
+  async sendChatMessage(message, history = []) {
+    const response = await fetch(`${API_BASE}/chat`, {
+      method: 'POST',
+      headers: getAuthHeaders(),
+      body: JSON.stringify({ message, history }),
+    });
+    return handleResponse(response);
+  },
+
   // --- Dashboard ---
   async getDashboardData() {
     const response = await fetch(`${API_BASE}/dashboard`, {
