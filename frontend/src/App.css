@@ -174,9 +174,9 @@ body {
 }
 
 .btn-outline-auth {
-  background: transparent;
+  background: var(--bg-card);
   color: var(--text-main);
-  border: 1px solid var(--border-card);
+  border: 1.5px solid var(--border-hover);
   padding: 0.45rem 0.95rem;
   border-radius: var(--radius-md);
   font-size: 0.85rem;
