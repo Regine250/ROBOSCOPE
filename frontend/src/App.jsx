@@ -108,11 +108,9 @@ function NavigationBar() {
           </div>
         ) : (
           <div className="auth-buttons-group">
-            <Link to="/login" className="btn btn-outline-auth">
-              Sign In
-            </Link>
+           
             <Link to="/signup" className="btn btn-primary-auth">
-              Sign Up
+              Join Us
             </Link>
           </div>
         )}
