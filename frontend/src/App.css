@@ -48,7 +48,7 @@
 }
 
 body {
-  background-color: var(--bg-primary);
+  background-color: #F9FAFB;
   color: var(--text-main);
   font-family: var(--font-sans);
   min-height: 100vh;
