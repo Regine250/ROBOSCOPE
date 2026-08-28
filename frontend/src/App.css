@@ -789,7 +789,7 @@ body {
   align-items: center;
   gap: 0.6rem;
   background: linear-gradient(135deg, #ffffff 0%, #eaf1fb 100%);
-  color: #fff;
+  color: #rgba(255,255,255,0.15) bg, #fff text;
   border: 1px solid #b0c4de;
   padding: 0.75rem 1.25rem;
   border-radius: 35px;
