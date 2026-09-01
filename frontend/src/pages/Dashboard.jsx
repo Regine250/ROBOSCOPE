@@ -1,26 +1,15 @@
 import React, { useState, useEffect, useCallback } from 'react';
-import { Link, useNavigate } from 'react-router-dom';
+import { Link } from 'react-router-dom';
 import { api } from '../api';
-import { useAuth } from '../context/AuthContext';
 
 function Dashboard() {
-  const { user, isAuthenticated, loading: authLoading } = useAuth();
   const [data, setData] = useState(null);
   const [loading, setLoading] = useState(true);
   const [error, setError] = useState(null);
   const [syncing, setSyncing] = useState(false);
   const [actionMsg, setActionMsg] = useState(null);
-  const navigate = useNavigate();
-
-  // Redirect to login if not authenticated
-  useEffect(() => {
-    if (!authLoading && !isAuthenticated) {
-      navigate('/login', { state: { from: { pathname: '/dashboard' } } });
-    }
-  }, [authLoading, isAuthenticated, navigate]);
 
   const loadDashboard = useCallback(async () => {
-    if (!isAuthenticated) return;
     setLoading(true);
     setError(null);
     try {
@@ -31,7 +20,7 @@ function Dashboard() {
     } finally {
       setLoading(false);
     }
-  }, [isAuthenticated]);
+  }, []);
 
   useEffect(() => {
     loadDashboard();
@@ -74,11 +63,11 @@ function Dashboard() {
     }
   };
 
-  if (authLoading || (loading && !data)) {
+  if (loading && !data) {
     return (
       <div className="state-box loading-box">
         <div className="spinner" />
-        <p>Loading your research dashboard...</p>
+        <p>Loading robotics research dashboard...</p>
       </div>
     );
   }
@@ -109,16 +98,16 @@ function Dashboard() {
         <div className="dashboard-banner-left">
           <div
             className="dashboard-user-avatar"
-            style={{ backgroundColor: user?.avatar_color || '#06b6d4' }}
+            style={{ background: 'linear-gradient(135deg, #f59e0b, #d97706)' }}
           >
-            {(user?.username || 'U')[0].toUpperCase()}
+            ⚡
           </div>
           <div>
             <h1 className="dashboard-title">
-              Welcome back, <span className="highlight-name">{user?.full_name || user?.username}</span> 👋
+              RoboScope <span className="highlight-name">Intelligence Hub</span> 📊
             </h1>
             <p className="dashboard-subtitle">
-              Your personalized robotics intelligence workspace, saved papers & dataset trajectory hub.
+              Public robotics intelligence workspace, continuous arXiv indexing & LeRobot trajectory visualizer.
             </p>
           </div>
         </div>
@@ -192,7 +181,7 @@ function Dashboard() {
         <section className="dashboard-section saved-papers-section">
           <div className="section-header-row">
             <h2 className="section-heading">
-              📑 My Bookmarked Papers ({savedPapers.length})
+              📑 Bookmarked Research Papers ({savedPapers.length})
             </h2>
             <Link to="/" className="section-link">
               Browse More →
@@ -342,7 +331,7 @@ function Dashboard() {
                         className="progress-fill"
                         style={{
                           width: `${pct}%`,
-                          backgroundColor: cat.primary_category === 'cs.RO' ? '#06b6d4' : '#8b5cf6',
+                          backgroundColor: cat.primary_category === 'cs.RO' ? '#f59e0b' : '#10b981',
                         }}
                       />
                     </div>

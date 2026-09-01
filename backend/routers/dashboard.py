@@ -2,26 +2,37 @@ import json
 from typing import Optional
 from fastapi import APIRouter, Depends, HTTPException
 from db import db_cursor
-from auth import get_current_user
+from auth import get_optional_current_user
 
 router = APIRouter(prefix="/api/dashboard", tags=["dashboard"])
 
 @router.get("")
-def get_dashboard_summary(current_user: dict = Depends(get_current_user)):
-    user_id = current_user["id"]
+def get_dashboard_summary(current_user: Optional[dict] = Depends(get_optional_current_user)):
+    user_id = current_user["id"] if current_user else None
 
     with db_cursor() as cur:
-        # 1. User's saved papers
-        saved_rows = cur.execute("""
-            SELECT s.id as saved_id, s.item_type, s.item_id, s.note, s.created_at as saved_at,
-                   p.id as paper_db_id, p.base_id, p.title, p.abstract, p.authors_json,
-                   p.categories_json, p.primary_category, p.published, p.abs_url, p.pdf_url,
-                   p.referenced_datasets_json
-            FROM saved_items s
-            JOIN papers p ON s.item_type = 'paper' AND s.item_id = p.base_id
-            WHERE s.user_id = ?
-            ORDER BY s.created_at DESC
-        """, (user_id,)).fetchall()
+        # 1. Saved papers (all saved papers for public access, or filtered by user if authenticated)
+        if user_id:
+            saved_rows = cur.execute("""
+                SELECT s.id as saved_id, s.item_type, s.item_id, s.note, s.created_at as saved_at,
+                       p.id as paper_db_id, p.base_id, p.title, p.abstract, p.authors_json,
+                       p.categories_json, p.primary_category, p.published, p.abs_url, p.pdf_url,
+                       p.referenced_datasets_json
+                FROM saved_items s
+                JOIN papers p ON s.item_type = 'paper' AND s.item_id = p.base_id
+                WHERE s.user_id = ?
+                ORDER BY s.created_at DESC
+            """, (user_id,)).fetchall()
+        else:
+            saved_rows = cur.execute("""
+                SELECT s.id as saved_id, s.item_type, s.item_id, s.note, s.created_at as saved_at,
+                       p.id as paper_db_id, p.base_id, p.title, p.abstract, p.authors_json,
+                       p.categories_json, p.primary_category, p.published, p.abs_url, p.pdf_url,
+                       p.referenced_datasets_json
+                FROM saved_items s
+                JOIN papers p ON s.item_type = 'paper' AND s.item_id = p.base_id
+                ORDER BY s.created_at DESC
+            """).fetchall()
 
         saved_papers = []
         for r in saved_rows:

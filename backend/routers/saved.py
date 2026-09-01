@@ -9,7 +9,7 @@ router = APIRouter(prefix="/api/saved", tags=["saved"])
 def list_saved(current_user: Optional[dict] = Depends(get_optional_current_user)):
     user_id = current_user["id"] if current_user else None
 
-    where_clause = "WHERE s.user_id = ?" if user_id else "WHERE s.user_id IS NULL"
+    where_clause = "WHERE s.user_id = ?" if user_id else ""
     params = [user_id] if user_id else []
 
     with db_cursor() as cur:
@@ -96,7 +96,7 @@ def remove_saved(
             )
         else:
             cur.execute(
-                "DELETE FROM saved_items WHERE user_id IS NULL AND item_type = ? AND item_id = ?",
+                "DELETE FROM saved_items WHERE item_type = ? AND item_id = ?",
                 (item_type, item_id)
             )
     return {"ok": True}

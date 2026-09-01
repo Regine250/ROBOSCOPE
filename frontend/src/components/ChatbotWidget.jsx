@@ -1,7 +1,6 @@
 import React, { useState, useRef, useEffect } from 'react';
 import { Link } from 'react-router-dom';
 import { api } from '../api';
-import { useAuth } from '../context/AuthContext';
 
 const SUGGESTED_PROMPTS = [
   '🔬 What are the latest robotics papers?',
@@ -98,7 +97,6 @@ function ChatbotWidget() {
   const [loading, setLoading] = useState(false);
   const messagesEndRef = useRef(null);
   const inputRef = useRef(null);
-  const { user } = useAuth();
 
   const scrollToBottom = () => {
     messagesEndRef.current?.scrollIntoView({ behavior: 'smooth' });
@@ -230,9 +228,9 @@ function ChatbotWidget() {
                 {msg.role === 'user' && (
                   <div
                     className="msg-avatar user-avatar"
-                    style={{ backgroundColor: user?.avatar_color || '#06b6d4' }}
+                    style={{ background: 'linear-gradient(135deg, #3b82f6, #6366f1)', color: '#fff' }}
                   >
-                    {(user?.username || 'U')[0].toUpperCase()}
+                    👤
                   </div>
                 )}
               </div>

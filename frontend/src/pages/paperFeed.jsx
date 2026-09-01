@@ -1,10 +1,8 @@
 import React, { useState, useEffect, useCallback } from 'react';
 import { api } from '../api';
-import { useAuth } from '../context/AuthContext';
 import PaperCard from '../components/PaperCard.jsx';
 
 function PaperFeed() {
-  const { user, isAuthenticated } = useAuth();
   const [papers, setPapers] = useState([]);
   const [total, setTotal] = useState(0);
   const [page, setPage] = useState(1);
@@ -29,21 +27,19 @@ function PaperFeed() {
     }
   });
 
-  // Sync user saved papers from backend when authenticated
+  // Sync saved papers from backend on mount
   useEffect(() => {
-    if (isAuthenticated) {
-      api.listSaved()
-        .then((res) => {
-          const paperIds = (res.saved || [])
-            .filter((item) => item.item_type === 'paper')
-            .map((item) => item.item_id);
-          if (paperIds.length > 0) {
-            setSavedPapers(paperIds);
-          }
-        })
-        .catch(() => {});
-    }
-  }, [isAuthenticated, user]);
+    api.listSaved()
+      .then((res) => {
+        const paperIds = (res.saved || [])
+          .filter((item) => item.item_type === 'paper')
+          .map((item) => item.item_id);
+        if (paperIds.length > 0) {
+          setSavedPapers(paperIds);
+        }
+      })
+      .catch(() => {});
+  }, []);
 
   useEffect(() => {
     localStorage.setItem('roboscope_saved_papers', JSON.stringify(savedPapers));
@@ -205,7 +201,7 @@ function PaperFeed() {
               checked={savedOnly}
               onChange={(e) => setSavedOnly(e.target.checked)}
             />
-            <span>★ {isAuthenticated ? 'My Saved Papers' : 'Saved Only'}</span>
+            <span>★ Bookmarked Only</span>
           </label>
         </div>
       </div>
